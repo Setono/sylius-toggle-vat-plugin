@@ -1,0 +1,4 @@
+setono_sylius_toggle_vat:
+    ui:
+        display_with_vat: Display prices with VAT
+        display_without_vat: Display prices without VAT

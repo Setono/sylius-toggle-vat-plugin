@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<container xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://symfony.com/schema/dic/services"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+    <services>
+        <service id="Setono\SyliusToggleVatPlugin\Controller\ToggleVatAction" public="true">
+            <argument type="service" id="Setono\SyliusToggleVatPlugin\Context\VatContextInterface"/>
+            <argument type="service" id="router"/>
+            <argument>%setono_sylius_toggle_vat.cookie_name%</argument>
+        </service>
+    </services>
+</container>

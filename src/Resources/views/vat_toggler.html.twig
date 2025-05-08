@@ -1,0 +1,7 @@
+<div class="ui right stackable inverted menu">
+    {% if sstv_display_with_vat() %}
+        <a href="{{ path('setono_sylius_toggle_vat_shop_toggle_vat') }}" class="item">{{ 'setono_sylius_toggle_vat.ui.display_without_vat'|trans }}</a>
+    {% else %}
+        <a href="{{ path('setono_sylius_toggle_vat_shop_toggle_vat') }}" class="item">{{ 'setono_sylius_toggle_vat.ui.display_with_vat'|trans }}</a>
+    {% endif %}
+</div>

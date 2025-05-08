@@ -7,20 +7,40 @@ namespace Setono\SyliusToggleVatPlugin\DependencyInjection;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\Extension;
+use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
 use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 
-final class SetonoSyliusToggleVatExtension extends Extension
+final class SetonoSyliusToggleVatExtension extends Extension implements PrependExtensionInterface
 {
     public function load(array $configs, ContainerBuilder $container): void
     {
         /**
          * @psalm-suppress PossiblyNullArgument
          *
-         * @var array{option: scalar} $config
+         * @var array{display_with_vat: bool, cookie_name: string} $config
          */
         $config = $this->processConfiguration($this->getConfiguration([], $container), $configs);
         $loader = new XmlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
 
+        $container->setParameter('setono_sylius_toggle_vat.display_with_vat', $config['display_with_vat']);
+        $container->setParameter('setono_sylius_toggle_vat.cookie_name', $config['cookie_name']);
+
         $loader->load('services.xml');
+    }
+
+    public function prepend(ContainerBuilder $container): void
+    {
+        $container->prependExtensionConfig('sylius_ui', [
+            'events' => [
+                'sylius.shop.layout.topbar' => [
+                    'blocks' => [
+                        'sstv_vat_toggler' => [
+                            'template' => '@SetonoSyliusToggleVatPlugin/vat_toggler.html.twig',
+                            'priority' => 20,
+                        ],
+                    ],
+                ],
+            ],
+        ]);
     }
 }

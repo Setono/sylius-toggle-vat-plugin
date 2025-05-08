@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<container xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://symfony.com/schema/dic/services"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+    <services>
+        <service id="Setono\SyliusToggleVatPlugin\Resolver\PriceResolverInterface"
+                 alias="Setono\SyliusToggleVatPlugin\Resolver\PriceResolver"/>
+
+        <service id="Setono\SyliusToggleVatPlugin\Resolver\PriceResolver">
+            <argument type="service" id="sylius.context.channel"/>
+            <argument type="service" id="sylius.calculator.product_variant_price"/>
+            <argument type="service" id="sylius.tax_rate_resolver"/>
+            <argument type="service" id="sylius.tax_calculator"/>
+            <argument type="service" id="Setono\SyliusToggleVatPlugin\Context\VatContextInterface"/>
+        </service>
+    </services>
+</container>
