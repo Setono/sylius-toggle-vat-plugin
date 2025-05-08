@@ -1,6 +1,6 @@
 {
-    "name": "setono/sylius-plugin-skeleton",
-    "description": "Acme example plugin for Sylius.",
+    "name": "setono/sylius-toggle-vat-plugin",
+    "description": "Let customers decide to show prices with or without VAT in your Sylius store",
     "license": "MIT",
     "type": "sylius-plugin",
     "keywords": [
@@ -41,12 +41,12 @@
     "prefer-stable": true,
     "autoload": {
         "psr-4": {
-            "Acme\\SyliusExamplePlugin\\": "src/"
+            "Setono\\SyliusToggleVatPlugin\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Acme\\SyliusExamplePlugin\\Tests\\": "tests/"
+            "Setono\\SyliusToggleVatPlugin\\Tests\\": "tests/"
         },
         "classmap": [
             "tests/Application/Kernel.php"

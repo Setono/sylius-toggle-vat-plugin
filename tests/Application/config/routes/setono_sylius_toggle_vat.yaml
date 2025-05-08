@@ -1,0 +1,2 @@
+setono_sylius_toggle_vat:
+    resource: "@SetonoSyliusToggleVatPlugin/Resources/config/routes.yaml"

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Acme\SyliusExamplePlugin\DependencyInjection;
+namespace Setono\SyliusToggleVatPlugin\DependencyInjection;
 
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
@@ -12,18 +12,10 @@ final class Configuration implements ConfigurationInterface
 {
     public function getConfigTreeBuilder(): TreeBuilder
     {
-        $treeBuilder = new TreeBuilder('acme_sylius_example');
+        $treeBuilder = new TreeBuilder('setono_sylius_toggle_vat');
 
         /** @var ArrayNodeDefinition $rootNode */
         $rootNode = $treeBuilder->getRootNode();
-
-        $rootNode
-            ->children()
-                ->scalarNode('option')
-                    ->info('This is an example configuration option')
-                    ->isRequired()
-                    ->cannotBeEmpty()
-        ;
 
         return $treeBuilder;
     }
