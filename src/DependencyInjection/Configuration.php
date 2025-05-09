@@ -18,7 +18,7 @@ final class Configuration implements ConfigurationInterface
         /** @var ArrayNodeDefinition $rootNode */
         $rootNode = $treeBuilder->getRootNode();
 
-        /** @psalm-suppress MixedMethodCall,UndefinedInterfaceMethod,PossiblyNullReference */
+        /** @psalm-suppress MixedMethodCall,UndefinedInterfaceMethod,PossiblyNullReference,DeprecatedClass */
         $rootNode
             ->children()
                 ->booleanNode('display_with_vat')
