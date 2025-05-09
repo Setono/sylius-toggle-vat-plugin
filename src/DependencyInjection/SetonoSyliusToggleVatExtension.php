@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Setono\SyliusToggleVatPlugin\DependencyInjection;
 
+use Setono\SyliusToggleVatPlugin\Context\VatContextInterface;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\Extension;
@@ -24,6 +25,10 @@ final class SetonoSyliusToggleVatExtension extends Extension implements PrependE
 
         $container->setParameter('setono_sylius_toggle_vat.display_with_vat', $config['display_with_vat']);
         $container->setParameter('setono_sylius_toggle_vat.cookie_name', $config['cookie_name']);
+
+        $container->registerForAutoconfiguration(VatContextInterface::class)
+            ->addTag('setono_sylius_toggle_vat.vat_context')
+        ;
 
         $loader->load('services.xml');
 
