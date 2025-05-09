@@ -35,6 +35,7 @@
         "phpunit/phpunit": "^9.6.23",
         "psalm/plugin-phpunit": "^0.18.4",
         "setono/code-quality-pack": "^2.9",
+        "setono/doctrine-orm-trait": "^1.2",
         "shipmonk/composer-dependency-analyser": "^1.8.2",
         "sylius/sylius": "~1.12.19",
         "symfony/debug-bundle": "^5.4 || ^6.4 || ^7.0",

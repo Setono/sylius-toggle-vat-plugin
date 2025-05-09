@@ -13,3 +13,11 @@ sylius_shop:
 
 sylius_api:
     enabled: true
+
+sylius_fixtures:
+    suites:
+        default:
+            listeners:
+                default_tax_zone:
+                    options:
+                        zone: US
