@@ -65,7 +65,7 @@ final class PriceHelperTest extends TestCase
         $context = []; // No channel provided
         $price = 1200;
 
-        $this->priceResolver->resolvePrice($productVariant)->willReturn($price);
+        $this->priceResolver->resolvePrice($productVariant, null)->willReturn($price);
 
         $resolvedPrice = $this->priceHelper->getPrice($productVariant, $context);
 
@@ -95,7 +95,7 @@ final class PriceHelperTest extends TestCase
         $context = []; // No channel provided
         $originalPrice = 2000;
 
-        $this->priceResolver->resolveOriginalPrice($productVariant)->willReturn($originalPrice);
+        $this->priceResolver->resolveOriginalPrice($productVariant, null)->willReturn($originalPrice);
 
         $resolvedOriginalPrice = $this->priceHelper->getOriginalPrice($productVariant, $context);
 
