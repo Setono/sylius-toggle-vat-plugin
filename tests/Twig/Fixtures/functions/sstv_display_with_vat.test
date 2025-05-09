@@ -1,0 +1,8 @@
+--TEST--
+"sstv_display_with_vat" should return true
+--TEMPLATE--
+{{ sstv_display_with_vat() ? 'true' : 'false' }}
+--DATA--
+return []
+--EXPECT--
+true

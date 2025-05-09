@@ -1,0 +1,10 @@
+--TEST--
+"sstv_vat_toggler" should return the VAT toggler HTML
+--TEMPLATE--
+{{ sstv_vat_toggler() }}
+--TEMPLATE(@SetonoSyliusToggleVatPlugin/vat_toggler.html.twig)--
+Show prices without VAT
+--DATA--
+return []
+--EXPECT--
+Show prices without VAT
