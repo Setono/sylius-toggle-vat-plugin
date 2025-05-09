@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Setono\SyliusToggleVatPlugin\Context;
 
+use Setono\SyliusToggleVatPlugin\Exception\NoVatContextException;
 use Symfony\Component\HttpFoundation\RequestStack;
 
 final class CookieBasedVatContext implements VatContextInterface
 {
     public function __construct(
-        private readonly VatContextInterface $decorated,
         private readonly RequestStack $requestStack,
         private readonly string $cookieName,
     ) {
@@ -19,12 +19,12 @@ final class CookieBasedVatContext implements VatContextInterface
     {
         $request = $this->requestStack->getMainRequest();
         if (null === $request) {
-            return $this->decorated->displayWithVat();
+            throw new NoVatContextException();
         }
 
         $cookie = $request->cookies->get($this->cookieName);
         if (null === $cookie) {
-            return $this->decorated->displayWithVat();
+            throw new NoVatContextException();
         }
 
         return (bool) $cookie;

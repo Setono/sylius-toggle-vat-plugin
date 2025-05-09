@@ -3,21 +3,25 @@
            xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
     <services>
         <service id="Setono\SyliusToggleVatPlugin\Context\VatContextInterface"
-                 alias="Setono\SyliusToggleVatPlugin\Context\DefaultVatContext"/>
+                 alias="Setono\SyliusToggleVatPlugin\Context\CompositeVatContext"/>
+
+        <service id="Setono\SyliusToggleVatPlugin\Context\CompositeVatContext"/>
 
         <service id="Setono\SyliusToggleVatPlugin\Context\DefaultVatContext">
             <argument>%setono_sylius_toggle_vat.display_with_vat%</argument>
+
+            <tag name="setono_sylius_toggle_vat.vat_context" priority="-100"/>
         </service>
 
-        <service id="Setono\SyliusToggleVatPlugin\Context\CookieBasedVatContext"
-                 decorates="Setono\SyliusToggleVatPlugin\Context\VatContextInterface" decoration-priority="100">
-            <argument type="service" id="Setono\SyliusToggleVatPlugin\Context\CookieBasedVatContext.inner"/>
+        <service id="Setono\SyliusToggleVatPlugin\Context\CookieBasedVatContext">
             <argument type="service" id="request_stack"/>
             <argument>%setono_sylius_toggle_vat.cookie_name%</argument>
+
+            <tag name="setono_sylius_toggle_vat.vat_context" priority="-90"/>
         </service>
 
         <service id="Setono\SyliusToggleVatPlugin\Context\CachedVatContext"
-                 decorates="Setono\SyliusToggleVatPlugin\Context\VatContextInterface" decoration-priority="90">
+                 decorates="Setono\SyliusToggleVatPlugin\Context\VatContextInterface" decoration-priority="-100">
             <argument type="service" id="Setono\SyliusToggleVatPlugin\Context\CachedVatContext.inner"/>
         </service>
     </services>

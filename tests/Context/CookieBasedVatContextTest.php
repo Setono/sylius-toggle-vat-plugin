@@ -6,18 +6,14 @@ namespace Setono\SyliusToggleVatPlugin\Tests\Context;
 
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
-use Prophecy\Prophecy\ObjectProphecy;
 use Setono\SyliusToggleVatPlugin\Context\CookieBasedVatContext;
-use Setono\SyliusToggleVatPlugin\Context\VatContextInterface;
+use Setono\SyliusToggleVatPlugin\Exception\NoVatContextException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 
 final class CookieBasedVatContextTest extends TestCase
 {
     use ProphecyTrait;
-
-    /** @var ObjectProphecy<VatContextInterface> */
-    private ObjectProphecy $decoratedVatContext;
 
     private RequestStack $requestStack;
 
@@ -27,37 +23,31 @@ final class CookieBasedVatContextTest extends TestCase
     {
         parent::setUp();
 
-        $this->decoratedVatContext = $this->prophesize(VatContextInterface::class);
         $this->requestStack = new RequestStack();
     }
 
     /** @test */
-    public function it_returns_decorated_value_if_no_request(): void
+    public function it_throws_exception_if_no_request(): void
     {
-        $this->decoratedVatContext->displayWithVat()->willReturn(true);
+        $this->expectException(NoVatContextException::class);
 
-        $vatContext = new CookieBasedVatContext(
-            $this->decoratedVatContext->reveal(),
+        (new CookieBasedVatContext(
             $this->requestStack,
             $this->cookieName,
-        );
-
-        $this->assertTrue($vatContext->displayWithVat());
+        ))->displayWithVat();
     }
 
     /** @test */
-    public function it_returns_decorated_value_if_cookie_is_not_set(): void
+    public function it_throws_exception_if_cookie_is_not_set(): void
     {
-        $this->requestStack->push(new Request());
-        $this->decoratedVatContext->displayWithVat()->willReturn(false);
+        $this->expectException(NoVatContextException::class);
 
-        $vatContext = new CookieBasedVatContext(
-            $this->decoratedVatContext->reveal(),
+        $this->requestStack->push(new Request());
+
+        (new CookieBasedVatContext(
             $this->requestStack,
             $this->cookieName,
-        );
-
-        $this->assertFalse($vatContext->displayWithVat());
+        ))->displayWithVat();
     }
 
     /** @test */
@@ -71,7 +61,6 @@ final class CookieBasedVatContextTest extends TestCase
         ));
 
         $vatContext = new CookieBasedVatContext(
-            $this->decoratedVatContext->reveal(),
             $this->requestStack,
             $this->cookieName,
         );
@@ -90,7 +79,6 @@ final class CookieBasedVatContextTest extends TestCase
         ));
 
         $vatContext = new CookieBasedVatContext(
-            $this->decoratedVatContext->reveal(),
             $this->requestStack,
             $this->cookieName,
         );

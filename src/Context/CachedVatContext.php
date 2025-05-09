@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Setono\SyliusToggleVatPlugin\Context;
 
-// todo instead of decorating, use the same pattern as Sylius does for channel contexts and use tags to register services, so it's easier for users to create a new vat context
 final class CachedVatContext implements VatContextInterface
 {
     private ?bool $displayWithVat = null;
