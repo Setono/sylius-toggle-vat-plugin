@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Setono\SyliusToggleVatPlugin\DependencyInjection;
 
+use Sylius\Bundle\CoreBundle\Templating\Helper\PriceHelper;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
@@ -27,6 +28,11 @@ final class Configuration implements ConfigurationInterface
                 ->scalarNode('cookie_name')
                     ->defaultValue('sstv_display_with_vat')
                     ->info('Name of the cookie used to store the user\'s VAT choice')
+                ->end()
+                ->booleanNode('decorate_price_helper')
+                    ->defaultTrue()
+                    ->info(sprintf('By default the plugin will decorate Sylius\'s PriceHelper (%s) to add the VAT logic. If you want to disable this and do your own custom implementation, set this to false', PriceHelper::class))
+                ->end()
         ;
 
         return $treeBuilder;

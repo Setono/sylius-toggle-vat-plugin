@@ -5,7 +5,6 @@
         <import resource="services/context.xml"/>
         <import resource="services/controller.xml"/>
         <import resource="services/resolver.xml"/>
-        <import resource="services/templating.xml"/>
         <import resource="services/twig.xml"/>
     </imports>
 </container>
