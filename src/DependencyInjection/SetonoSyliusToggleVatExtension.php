@@ -25,16 +25,13 @@ final class SetonoSyliusToggleVatExtension extends Extension implements PrependE
 
         $container->setParameter('setono_sylius_toggle_vat.display_with_vat', $config['display_with_vat']);
         $container->setParameter('setono_sylius_toggle_vat.cookie_name', $config['cookie_name']);
+        $container->setParameter('setono_sylius_toggle_vat.decorate_price_helper', $config['decorate_price_helper']);
 
         $container->registerForAutoconfiguration(VatContextInterface::class)
             ->addTag('setono_sylius_toggle_vat.vat_context')
         ;
 
         $loader->load('services.xml');
-
-        if ($config['decorate_price_helper']) {
-            $loader->load('services/conditional/price_helper.xml');
-        }
     }
 
     public function prepend(ContainerBuilder $container): void

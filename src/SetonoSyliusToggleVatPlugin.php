@@ -6,6 +6,7 @@ namespace Setono\SyliusToggleVatPlugin;
 
 use Setono\CompositeCompilerPass\CompositeCompilerPass;
 use Setono\SyliusToggleVatPlugin\Context\CompositeVatContext;
+use Setono\SyliusToggleVatPlugin\DependencyInjection\Compiler\DecoratePriceHelperPass;
 use Sylius\Bundle\CoreBundle\Application\SyliusPluginTrait;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
@@ -22,5 +23,7 @@ final class SetonoSyliusToggleVatPlugin extends Bundle
             CompositeVatContext::class,
             'setono_sylius_toggle_vat.vat_context',
         ));
+
+        $container->addCompilerPass(new DecoratePriceHelperPass());
     }
 }
