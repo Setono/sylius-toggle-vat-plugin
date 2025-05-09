@@ -11,7 +11,7 @@ use Sylius\Component\Core\Model\ChannelInterface;
 use Sylius\Component\Core\Model\ProductVariantInterface;
 
 /**
- * @psalm-suppress DeprecatedInterface
+ * @psalm-suppress DeprecatedInterface,DeprecatedClass
  */
 class PriceHelper extends BasePriceHelper
 {
