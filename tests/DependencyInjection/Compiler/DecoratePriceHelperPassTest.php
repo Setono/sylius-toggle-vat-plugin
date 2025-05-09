@@ -24,6 +24,8 @@ final class DecoratePriceHelperPassTest extends AbstractCompilerPassTestCase
     public function price_helper_is_decorated(): void
     {
         $this->setParameter('setono_sylius_toggle_vat.decorate_price_helper', true);
+
+        /** @psalm-suppress DeprecatedClass */
         $this->setDefinition('sylius.templating.helper.price', new Definition(SyliusPriceHelper::class));
 
         $this->compile();
