@@ -31,7 +31,7 @@ final class Configuration implements ConfigurationInterface
                 ->end()
                 ->booleanNode('decorate_price_helper')
                     ->defaultTrue()
-                    ->info(sprintf('By default the plugin will decorate Sylius\'s PriceHelper (%s) to add the VAT logic. If you want to disable this and do your own custom implementation, set this to false', PriceHelper::class))
+                    ->info(sprintf('By default, the plugin will decorate Sylius\'s PriceHelper (%s) to add the VAT logic. If you want to disable this and do your own custom implementation, set this to false', PriceHelper::class))
                 ->end()
         ;
 
