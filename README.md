@@ -8,6 +8,54 @@
 
 Let customers decide to show prices with or without VAT in your Sylius store.
 
+## Installation
+
+```shell
+composer require setono/sylius-toggle-vat-plugin
+```
+
+### Import routing
+
+```yaml
+# config/routes/setono_sylius_toggle_vat.yaml
+setono_sylius_toggle_vat:
+    resource: "@SetonoSyliusToggleVatPlugin/Resources/config/routes.yaml"
+```
+
+or if your app doesn't use locales:
+
+```yaml
+# config/routes/setono_sylius_toggle_vat.yaml
+setono_sylius_toggle_vat:
+    resource: "@SetonoSyliusToggleVatPlugin/Resources/config/routes_no_locale.yaml"
+```
+
+## Default configuration
+
+```yaml
+setono_sylius_toggle_vat:
+
+    # Whether to display prices with VAT or not by default
+    display_with_vat:     true
+
+    # Name of the cookie used to store the user's VAT choice
+    cookie_name:          sstv_display_with_vat
+
+    # By default, the plugin will decorate Sylius's PriceHelper (Sylius\Bundle\CoreBundle\Templating\Helper\PriceHelper)
+    # to add the VAT logic. If you want to disable this and do your own custom implementation, set this to false
+    decorate_price_helper: true
+```
+
+## Insert VAT toggler
+
+By default, the VAT toggler is injected using the Sylius UI event system and the event `sylius.shop.layout.topbar`,
+however, you can inject it yourself calling the Twig function `sstv_vat_toggler()` anywhere in your templates.
+
+## VAT context
+
+The plugin uses the `Setono\SyliusToggleVatPlugin\Context\VatContextInterface` to deduce whether to show prices
+with our without VAT. You can create your own VAT context by implementing that interface.
+
 [ico-version]: https://poser.pugx.org/setono/sylius-toggle-vat-plugin/v/stable
 [ico-license]: https://poser.pugx.org/setono/sylius-toggle-vat-plugin/license
 [ico-github-actions]: https://github.com/Setono/sylius-toggle-vat-plugin/workflows/build/badge.svg
