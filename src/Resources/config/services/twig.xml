@@ -11,5 +11,10 @@
 
             <tag name="twig.runtime"/>
         </service>
+
+        <service id="Setono\SyliusToggleVatPlugin\Twig\PriceExtension" decorates="sylius.twig.extension.price"
+                 decoration-priority="100">
+            <argument type="service" id="Setono\SyliusToggleVatPlugin\Twig\PriceExtension.inner"/>
+        </service>
     </services>
 </container>

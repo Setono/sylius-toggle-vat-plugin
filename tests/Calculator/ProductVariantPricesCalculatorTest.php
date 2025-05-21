@@ -16,7 +16,6 @@ use Sylius\Component\Core\Model\ProductVariantInterface;
 use Sylius\Component\Core\Model\TaxRateInterface;
 use Sylius\Component\Taxation\Calculator\CalculatorInterface;
 use Sylius\Component\Taxation\Resolver\TaxRateResolverInterface;
-use Twig\Template;
 
 final class ProductVariantPricesCalculatorTest extends TestCase
 {
@@ -49,9 +48,6 @@ final class ProductVariantPricesCalculatorTest extends TestCase
             $this->taxCalculator->reveal(),
             $this->vatContext->reveal(),
         );
-        $this->calculator->setBacktraceClosure(static fn () => [
-            ['class' => Template::class, 'function' => 'renderBlock'],
-        ]);
     }
 
     /** @test */
@@ -61,7 +57,7 @@ final class ProductVariantPricesCalculatorTest extends TestCase
         $channel = $this->prophesize(ChannelInterface::class);
         $channel->getDefaultTaxZone()->willReturn(null);
 
-        $context = ['channel' => $channel->reveal()];
+        $context = ['channel' => $channel->reveal(), 'vat_context_aware' => true];
         $expectedPrice = 1000;
 
         $this->decoratedCalculator->calculate($productVariant, $context)->willReturn($expectedPrice);
@@ -79,7 +75,7 @@ final class ProductVariantPricesCalculatorTest extends TestCase
         $channel = $this->prophesize(ChannelInterface::class);
         $channel->getDefaultTaxZone()->willReturn($zone);
 
-        $context = ['channel' => $channel->reveal()];
+        $context = ['channel' => $channel->reveal(), 'vat_context_aware' => true];
         $expectedPrice = 1000;
 
         $this->decoratedCalculator->calculate($productVariant, $context)->willReturn($expectedPrice);
@@ -101,7 +97,7 @@ final class ProductVariantPricesCalculatorTest extends TestCase
         $channel = $this->prophesize(ChannelInterface::class);
         $channel->getDefaultTaxZone()->willReturn($zone);
 
-        $context = ['channel' => $channel->reveal()];
+        $context = ['channel' => $channel->reveal(), 'vat_context_aware' => true];
         $basePrice = 1000;
         $taxAmount = 230;
         $expectedPrice = $basePrice + $taxAmount;
@@ -127,7 +123,7 @@ final class ProductVariantPricesCalculatorTest extends TestCase
         $channel = $this->prophesize(ChannelInterface::class);
         $channel->getDefaultTaxZone()->willReturn($zone);
 
-        $context = ['channel' => $channel->reveal()];
+        $context = ['channel' => $channel->reveal(), 'vat_context_aware' => true];
         $basePrice = 1230;
         $taxAmount = 230;
         $expectedPrice = $basePrice - $taxAmount;
@@ -153,7 +149,7 @@ final class ProductVariantPricesCalculatorTest extends TestCase
         $channel = $this->prophesize(ChannelInterface::class);
         $channel->getDefaultTaxZone()->willReturn($zone);
 
-        $context = ['channel' => $channel->reveal()];
+        $context = ['channel' => $channel->reveal(), 'vat_context_aware' => true];
         $basePrice = 1230;
         $taxAmount = 230;
 
@@ -178,7 +174,7 @@ final class ProductVariantPricesCalculatorTest extends TestCase
         $channel = $this->prophesize(ChannelInterface::class);
         $channel->getDefaultTaxZone()->willReturn($zone);
 
-        $context = ['channel' => $channel->reveal()];
+        $context = ['channel' => $channel->reveal(), 'vat_context_aware' => true];
         $basePrice = 1000;
         $taxAmount = 230;
 
@@ -203,7 +199,7 @@ final class ProductVariantPricesCalculatorTest extends TestCase
         $channel = $this->prophesize(ChannelInterface::class);
         $channel->getDefaultTaxZone()->willReturn($zone);
 
-        $context = ['channel' => $channel->reveal()];
+        $context = ['channel' => $channel->reveal(), 'vat_context_aware' => true];
         $basePrice = 1000;
         $taxAmount = 230;
         $expectedPrice = $basePrice + $taxAmount;

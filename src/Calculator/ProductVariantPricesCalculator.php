@@ -10,7 +10,6 @@ use Sylius\Component\Core\Model\ChannelInterface;
 use Sylius\Component\Core\Model\ProductVariantInterface;
 use Sylius\Component\Taxation\Calculator\CalculatorInterface;
 use Sylius\Component\Taxation\Resolver\TaxRateResolverInterface;
-use Twig\Template;
 use Webmozart\Assert\Assert;
 
 /**
@@ -20,16 +19,12 @@ use Webmozart\Assert\Assert;
 /** @psalm-suppress DeprecatedInterface */
 final class ProductVariantPricesCalculator implements ProductVariantPricesCalculatorInterface
 {
-    /** @var BacktraceClosure */
-    private \Closure $backtraceClosure;
-
     public function __construct(
         private readonly ProductVariantPricesCalculatorInterface $decorated,
         private readonly TaxRateResolverInterface $taxRateResolver,
         private readonly CalculatorInterface $taxCalculator,
         private readonly VatContextInterface $vatContext,
     ) {
-        $this->backtraceClosure = static fn (): array => debug_backtrace(\DEBUG_BACKTRACE_IGNORE_ARGS);
     }
 
     public function calculate(ProductVariantInterface $productVariant, array $context): int
@@ -58,7 +53,7 @@ final class ProductVariantPricesCalculator implements ProductVariantPricesCalcul
 
         $price = $defaultPrice();
 
-        if (!$this->isCalledFromTwig()) {
+        if (!isset($context['vat_context_aware'])) {
             return $price;
         }
 
@@ -79,29 +74,5 @@ final class ProductVariantPricesCalculator implements ProductVariantPricesCalcul
             !$this->vatContext->displayWithVat() && $taxRate->isIncludedInPrice() => $price - $tax,
             default => $price,
         };
-    }
-
-    /**
-     * @param BacktraceClosure $backtraceClosure
-     */
-    public function setBacktraceClosure(\Closure $backtraceClosure): void
-    {
-        $this->backtraceClosure = $backtraceClosure;
-    }
-
-    private function isCalledFromTwig(): bool
-    {
-        $backtrace = ($this->backtraceClosure)();
-        foreach ($backtrace as $trace) {
-            if (!isset($trace['class'])) {
-                continue;
-            }
-
-            if (is_a($trace['class'], Template::class, true)) {
-                return true;
-            }
-        }
-
-        return false;
     }
 }
