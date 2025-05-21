@@ -2,10 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Setono\SyliusToggleVatPlugin\Resolver;
+namespace Setono\SyliusToggleVatPlugin\Calculator;
 
 use Setono\SyliusToggleVatPlugin\Context\VatContextInterface;
-use Sylius\Component\Channel\Context\ChannelContextInterface;
 use Sylius\Component\Core\Calculator\ProductVariantPricesCalculatorInterface;
 use Sylius\Component\Core\Model\ChannelInterface;
 use Sylius\Component\Core\Model\ProductVariantInterface;
@@ -13,40 +12,42 @@ use Sylius\Component\Taxation\Calculator\CalculatorInterface;
 use Sylius\Component\Taxation\Resolver\TaxRateResolverInterface;
 use Webmozart\Assert\Assert;
 
-final class PriceResolver implements PriceResolverInterface
+/** @psalm-suppress DeprecatedInterface */
+final class ProductVariantPricesCalculator implements ProductVariantPricesCalculatorInterface
 {
     public function __construct(
-        private readonly ChannelContextInterface $channelContext,
-        private readonly ProductVariantPricesCalculatorInterface $productVariantPricesCalculator,
+        private readonly ProductVariantPricesCalculatorInterface $decorated,
         private readonly TaxRateResolverInterface $taxRateResolver,
         private readonly CalculatorInterface $taxCalculator,
         private readonly VatContextInterface $vatContext,
     ) {
     }
 
-    public function resolvePrice(ProductVariantInterface $productVariant, ChannelInterface $channel = null): int
+    public function calculate(ProductVariantInterface $productVariant, array $context): int
     {
-        return $this->resolve('calculate', $productVariant, $channel);
+        return $this->resolve($productVariant, $context, fn () => $this->decorated->calculate(
+            $productVariant,
+            $context,
+        ));
     }
 
-    public function resolveOriginalPrice(ProductVariantInterface $productVariant, ChannelInterface $channel = null): int
+    public function calculateOriginal(ProductVariantInterface $productVariant, array $context): int
     {
-        return $this->resolve('calculateOriginal', $productVariant, $channel);
+        return $this->resolve($productVariant, $context, fn () => $this->decorated->calculateOriginal(
+            $productVariant,
+            $context,
+        ));
     }
 
     /**
-     * @param 'calculate'|'calculateOriginal' $method
+     * @param callable():int $defaultPrice
      */
-    private function resolve(string $method, ProductVariantInterface $productVariant, ChannelInterface $channel = null): int
+    private function resolve(ProductVariantInterface $productVariant, array $context, callable $defaultPrice): int
     {
-        $channel = $channel ?? $this->channelContext->getChannel();
+        $channel = $context['channel'] ?? null;
         Assert::isInstanceOf($channel, ChannelInterface::class);
 
-        /** @var mixed $price */
-        $price = $this->productVariantPricesCalculator->{$method}($productVariant, [
-            'channel' => $channel,
-        ]);
-        Assert::integer($price);
+        $price = $defaultPrice();
 
         $zone = $channel->getDefaultTaxZone();
         if (null === $zone) {
