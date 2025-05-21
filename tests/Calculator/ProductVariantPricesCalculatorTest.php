@@ -16,6 +16,7 @@ use Sylius\Component\Core\Model\ProductVariantInterface;
 use Sylius\Component\Core\Model\TaxRateInterface;
 use Sylius\Component\Taxation\Calculator\CalculatorInterface;
 use Sylius\Component\Taxation\Resolver\TaxRateResolverInterface;
+use Twig\Template;
 
 final class ProductVariantPricesCalculatorTest extends TestCase
 {
@@ -48,6 +49,9 @@ final class ProductVariantPricesCalculatorTest extends TestCase
             $this->taxCalculator->reveal(),
             $this->vatContext->reveal(),
         );
+        $this->calculator->setBacktraceClosure(static fn () => [
+            ['class' => Template::class],
+        ]);
     }
 
     /** @test */
