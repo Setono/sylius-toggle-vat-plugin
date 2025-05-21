@@ -40,10 +40,6 @@ setono_sylius_toggle_vat:
 
     # Name of the cookie used to store the user's VAT choice
     cookie_name:          sstv_display_with_vat
-
-    # By default, the plugin will decorate Sylius's PriceHelper (Sylius\Bundle\CoreBundle\Templating\Helper\PriceHelper)
-    # to add the VAT logic. If you want to disable this and do your own custom implementation, set this to false
-    decorate_price_helper: true
 ```
 
 ## Insert VAT toggler
