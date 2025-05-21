@@ -10,6 +10,8 @@ use Twig\TwigFunction;
 final class Extension extends AbstractExtension
 {
     /**
+     * @psalm-suppress InvalidArgument
+     *
      * @return non-empty-list<TwigFunction>
      */
     public function getFunctions(): array
