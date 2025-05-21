@@ -50,7 +50,7 @@ final class ProductVariantPricesCalculatorTest extends TestCase
             $this->vatContext->reveal(),
         );
         $this->calculator->setBacktraceClosure(static fn () => [
-            ['class' => Template::class],
+            ['class' => Template::class, 'function' => 'renderBlock'],
         ]);
     }
 
