@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Setono\SyliusToggleVatPlugin\Calculator;
 
 use Setono\SyliusToggleVatPlugin\Context\VatContextInterface;
-use Sylius\Bundle\CoreBundle\Templating\Helper\PriceHelper;
 use Sylius\Component\Core\Calculator\ProductVariantPricesCalculatorInterface;
 use Sylius\Component\Core\Model\ChannelInterface;
 use Sylius\Component\Core\Model\ProductVariantInterface;
@@ -96,10 +95,6 @@ final class ProductVariantPricesCalculator implements ProductVariantPricesCalcul
         foreach ($backtrace as $trace) {
             if (!isset($trace['class'])) {
                 continue;
-            }
-
-            if ($trace['class'] === PriceHelper::class) {
-                return true;
             }
 
             if (is_a($trace['class'], Template::class, true)) {
