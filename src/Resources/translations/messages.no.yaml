@@ -1,0 +1,4 @@
+setono_sylius_toggle_vat:
+    ui:
+        display_with_vat: Vis priser inkl. mva.
+        display_without_vat: Vis priser ekskl. mva.
