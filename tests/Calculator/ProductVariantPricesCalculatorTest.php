@@ -189,6 +189,30 @@ final class ProductVariantPricesCalculatorTest extends TestCase
     }
 
     /** @test */
+    public function it_rounds_the_tax_amount_returned_by_the_tax_calculator(): void
+    {
+        $productVariant = $this->prophesize(ProductVariantInterface::class)->reveal();
+        $zone = $this->prophesize(ZoneInterface::class)->reveal();
+        $taxRate = $this->prophesize(TaxRateInterface::class);
+        $taxRate->isIncludedInPrice()->willReturn(false);
+
+        $channel = $this->prophesize(ChannelInterface::class);
+        $channel->getDefaultTaxZone()->willReturn($zone);
+
+        $context = ['channel' => $channel->reveal(), 'vat_context_aware' => true];
+        $basePrice = 1000;
+
+        $this->decoratedCalculator->calculate($productVariant, $context)->willReturn($basePrice);
+        $this->taxRateResolver->resolve($productVariant, ['zone' => $zone])->willReturn($taxRate->reveal());
+        $this->taxCalculator->calculate($basePrice, $taxRate->reveal())->willReturn(219.8);
+        $this->vatContext->displayWithVat()->willReturn(true);
+
+        $result = $this->calculator->calculate($productVariant, $context);
+
+        $this->assertSame(1220, $result);
+    }
+
+    /** @test */
     public function it_delegates_calculate_original_to_decorated_calculator_and_applies_vat_rules(): void
     {
         $productVariant = $this->prophesize(ProductVariantInterface::class)->reveal();

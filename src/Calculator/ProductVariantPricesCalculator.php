@@ -67,7 +67,9 @@ final class ProductVariantPricesCalculator implements ProductVariantPricesCalcul
             return $price;
         }
 
-        $tax = (int) $this->taxCalculator->calculate($price, $taxRate);
+        // CalculatorInterface returns a float, so round rather than truncate. Sylius' own DefaultCalculator already
+        // rounds, but a custom tax calculator is not required to
+        $tax = (int) round($this->taxCalculator->calculate($price, $taxRate));
 
         return match (true) {
             $this->vatContext->displayWithVat() && !$taxRate->isIncludedInPrice() => $price + $tax,
