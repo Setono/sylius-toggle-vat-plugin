@@ -23,6 +23,8 @@
         <service id="Setono\SyliusToggleVatPlugin\Context\CachedVatContext"
                  decorates="Setono\SyliusToggleVatPlugin\Context\VatContextInterface" decoration-priority="-100">
             <argument type="service" id="Setono\SyliusToggleVatPlugin\Context\CachedVatContext.inner"/>
+
+            <tag name="kernel.reset" method="reset"/>
         </service>
     </services>
 </container>
