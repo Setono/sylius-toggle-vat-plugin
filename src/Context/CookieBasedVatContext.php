@@ -22,11 +22,12 @@ final class CookieBasedVatContext implements VatContextInterface
             throw new NoVatContextException();
         }
 
-        $cookie = $request->cookies->get($this->cookieName);
-        if (null === $cookie) {
-            throw new NoVatContextException();
-        }
-
-        return (bool) $cookie;
+        // Anything but the two values written by the toggle action is treated as 'no context', which makes the
+        // composite context fall through to the next context instead of interpreting an arbitrary value
+        return match ($request->cookies->get($this->cookieName)) {
+            '1' => true,
+            '0' => false,
+            default => throw new NoVatContextException(),
+        };
     }
 }
