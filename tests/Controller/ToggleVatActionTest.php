@@ -41,7 +41,7 @@ final class ToggleVatActionTest extends TestCase
     /** @test */
     public function it_sets_cookie_and_redirects_to_referer(): void
     {
-        $request = new Request();
+        $request = Request::create('https://example.com/toggle-vat');
         $request->headers->set('referer', 'https://example.com/previous-page');
 
         $this->vatContext->displayWithVat()->willReturn(true);
@@ -78,5 +78,35 @@ final class ToggleVatActionTest extends TestCase
         $this->assertEquals($this->cookieName, $cookie->getName());
         $this->assertEquals('1', $cookie->getValue());
         $this->assertGreaterThan(time(), $cookie->getExpiresTime());
+    }
+
+    /**
+     * @test
+     *
+     * @dataProvider untrustedRefererProvider
+     */
+    public function it_redirects_to_homepage_if_referer_is_not_on_the_same_host(string $referer): void
+    {
+        $request = Request::create('https://example.com/toggle-vat');
+        $request->headers->set('referer', $referer);
+
+        $this->vatContext->displayWithVat()->willReturn(true);
+        $this->urlGenerator->generate('sylius_shop_homepage')->willReturn('https://example.com/homepage');
+
+        $response = $this->action->__invoke($request);
+
+        $this->assertEquals('https://example.com/homepage', $response->getTargetUrl());
+    }
+
+    /**
+     * @return iterable<array-key, array{string}>
+     */
+    public function untrustedRefererProvider(): iterable
+    {
+        yield 'another host' => ['https://evil.example/phishing'];
+        yield 'protocol relative url' => ['//evil.example/phishing'];
+        yield 'a subdomain of the current host' => ['https://evil.example.com/phishing'];
+        yield 'empty string' => [''];
+        yield 'a relative path' => ['/previous-page'];
     }
 }

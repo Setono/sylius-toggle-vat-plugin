@@ -34,10 +34,21 @@ final class ToggleVatAction
     private function createResponse(Request $request): RedirectResponse
     {
         $referrer = $request->headers->get('referer');
-        if (is_string($referrer) && '' !== $referrer) {
+        if (null !== $referrer && self::isSameHost($request, $referrer)) {
             return new RedirectResponse($referrer);
         }
 
         return new RedirectResponse($this->urlGenerator->generate('sylius_shop_homepage'));
+    }
+
+    /**
+     * Redirecting to an unvalidated referrer is an open redirect. Only send the visitor back to a URL on the host
+     * they are already on, and fall back to the homepage for anything else
+     */
+    private static function isSameHost(Request $request, string $referrer): bool
+    {
+        $host = parse_url($referrer, \PHP_URL_HOST);
+
+        return is_string($host) && $host === $request->getHost();
     }
 }
