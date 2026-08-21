@@ -12,10 +12,6 @@ use Sylius\Component\Taxation\Calculator\CalculatorInterface;
 use Sylius\Component\Taxation\Resolver\TaxRateResolverInterface;
 use Webmozart\Assert\Assert;
 
-/**
- * @psalm-type BacktraceClosure = \Closure(): list<array{args?: list<mixed>, class?: class-string, file?: string, function: string, line?: int, object?: object, type?: string}>
- */
-
 /** @psalm-suppress DeprecatedInterface */
 final class ProductVariantPricesCalculator implements ProductVariantPricesCalculatorInterface
 {
