@@ -43,4 +43,19 @@ final class CachedVatContextTest extends TestCase
         $this->assertSame($result1, $result2);
         $this->assertSame($result2, $result3);
     }
+
+    /** @test */
+    public function it_queries_the_decorated_context_again_after_reset(): void
+    {
+        $decorated = $this->prophesize(VatContextInterface::class);
+        $decorated->displayWithVat()->willReturn(true, false)->shouldBeCalledTimes(2);
+
+        $cachedContext = new CachedVatContext($decorated->reveal());
+
+        $this->assertTrue($cachedContext->displayWithVat());
+
+        $cachedContext->reset();
+
+        $this->assertFalse($cachedContext->displayWithVat());
+    }
 }
