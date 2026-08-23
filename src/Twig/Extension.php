@@ -17,7 +17,7 @@ final class Extension extends AbstractExtension
     public function getFunctions(): array
     {
         return [
-            new TwigFunction('sstv_display_with_vat', [Runtime::class, 'displayWithVat'], ['needs_environment' => true, 'is_safe' => ['html']]),
+            new TwigFunction('sstv_display_with_vat', [Runtime::class, 'displayWithVat']),
             new TwigFunction('sstv_vat_toggler', [Runtime::class, 'vatToggler'], ['needs_environment' => true, 'is_safe' => ['html']]),
         ];
     }
