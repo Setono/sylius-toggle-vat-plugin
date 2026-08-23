@@ -18,7 +18,7 @@ final class SetonoSyliusToggleVatExtension extends Extension implements PrependE
         /**
          * @psalm-suppress PossiblyNullArgument
          *
-         * @var array{display_with_vat: bool, cookie_name: string, decorate_price_helper: bool} $config
+         * @var array{display_with_vat: bool, cookie_name: string} $config
          */
         $config = $this->processConfiguration($this->getConfiguration([], $container), $configs);
         $loader = new XmlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
