@@ -24,7 +24,6 @@
     "require-dev": {
         "api-platform/core": "^2.7.18",
         "babdev/pagerfanta-bundle": "^3.8",
-        "behat/behat": "^3.19",
         "doctrine/doctrine-bundle": "^2.11",
         "infection/infection": "^0.27.11",
         "jms/serializer-bundle": "^4.2",
