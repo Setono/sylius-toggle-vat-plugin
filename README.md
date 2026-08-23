@@ -50,7 +50,50 @@ however, you can inject it yourself calling the Twig function `sstv_vat_toggler(
 ## VAT context
 
 The plugin uses the `Setono\SyliusToggleVatPlugin\Context\VatContextInterface` to deduce whether to show prices
-with our without VAT. You can create your own VAT context by implementing that interface.
+with or without VAT. You can create your own VAT context by implementing that interface:
+
+```php
+<?php
+declare(strict_types=1);
+
+namespace App\Context;
+
+use Setono\SyliusToggleVatPlugin\Context\VatContextInterface;
+use Setono\SyliusToggleVatPlugin\Exception\NoVatContextException;
+
+final class BusinessCustomerVatContext implements VatContextInterface
+{
+    public function displayWithVat(): bool
+    {
+        if ($customerIsNotLoggedIn) {
+            // Throwing means 'I can't decide', and the next context is asked instead
+            throw new NoVatContextException();
+        }
+
+        return !$customerIsBusiness;
+    }
+}
+```
+
+Contexts are asked in priority order, highest first, and the first one to return a value wins. A context that
+cannot decide must throw `NoVatContextException` so the next one gets a turn. The plugin ships two:
+
+| Priority | Context                 | Decides based on                                |
+|----------|-------------------------|-------------------------------------------------|
+| -90      | `CookieBasedVatContext` | The cookie set by the VAT toggler               |
+| -100     | `DefaultVatContext`     | The `display_with_vat` configuration option     |
+
+Your context is tagged for you through autoconfiguration, which gives it **priority 0**. That puts it ahead of
+both built-in contexts, so if it always returns a value the VAT toggler stops having any effect — it still sets
+the cookie, but nothing ever reads it. Tag the service yourself if you want it consulted only after the customer's
+own choice:
+
+```yaml
+services:
+    App\Context\BusinessCustomerVatContext:
+        tags:
+            - { name: 'setono_sylius_toggle_vat.vat_context', priority: -95 }
+```
 
 [ico-version]: https://poser.pugx.org/setono/sylius-toggle-vat-plugin/v/stable
 [ico-license]: https://poser.pugx.org/setono/sylius-toggle-vat-plugin/license
