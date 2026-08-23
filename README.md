@@ -47,6 +47,15 @@ setono_sylius_toggle_vat:
 By default, the VAT toggler is injected using the Sylius UI event system and the event `sylius.shop.layout.topbar`,
 however, you can inject it yourself calling the Twig function `sstv_vat_toggler()` anywhere in your templates.
 
+## Caching
+
+Prices now vary per visitor, based on a cookie. If you put a full page cache in front of your shop, whether that
+is Varnish, a CDN, or Symfony's own HTTP cache, it will happily serve one visitor's VAT variant to the next one.
+
+Make the cache vary on the plugin's cookie, or exclude the pages that render prices. With Varnish that means
+taking the cookie into account in your hash, and with a CDN it usually means adding the cookie to the cache key.
+The cookie name is configurable, and defaults to `sstv_display_with_vat`.
+
 ## VAT context
 
 The plugin uses the `Setono\SyliusToggleVatPlugin\Context\VatContextInterface` to deduce whether to show prices
