@@ -27,6 +27,8 @@ final class Configuration implements ConfigurationInterface
                 ->scalarNode('cookie_name')
                     ->defaultValue('sstv_display_with_vat')
                     ->info('Name of the cookie used to store the user\'s VAT choice')
+                ->end()
+            ->end()
         ;
 
         return $treeBuilder;
